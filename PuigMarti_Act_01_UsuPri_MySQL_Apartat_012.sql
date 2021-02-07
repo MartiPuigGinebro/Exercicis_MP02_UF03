@@ -1,0 +1,1 @@
+-- No deixa perquè la base de dades no és en la qual l'usuari té garantits privilegis

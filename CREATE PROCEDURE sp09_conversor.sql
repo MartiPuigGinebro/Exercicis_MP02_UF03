@@ -1,4 +1,7 @@
-DELIMITER / / USE empresa / / DROP PROCEDURE IF EXISTS sp_09_nivellSou / / CREATE PROCEDURE sp_09_nivellSou(
+DELIMITER // 
+USE empresa // 
+DROP PROCEDURE IF EXISTS sp_09_nivellSou // 
+CREATE PROCEDURE sp_09_nivellSou(
     IN pi_coditreballador integer,
     OUT po_nivell varchar(12)
 ) BEGIN
@@ -16,4 +19,5 @@ ELSE
 SET po_nivell = "Alt";
 END IF;
 END IF;
-END / / DELIMITER;
+END // 
+DELIMITER ;

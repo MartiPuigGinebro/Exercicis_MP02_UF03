@@ -3,34 +3,29 @@ drop procedure if exists act9;
 delimiter //
 create procedure act9()
 begin
-   declare recaptat bigint default 0;
-   declare pressu bigint default 0;
-   declare titol varchar(40);
-   declare rendibilitat varchar(15);
+    DECLARE edat bigint;
+    DECLARE nom varchar(30);
+    DECLARE sexe varchar(6);
    declare final int default false;
    
    declare elcursor cursor for
-      select titol_peli, recaudacio_peli, pressupost_peli
-      from PELLICULES;
+SELECT ACTORS.sexe_actor, ACTORS.anynaix_actor, ACTORS`.`nom_actor
+FROM ACTORS;
 
    declare continue handler for not found set final = 1;
    open elcursor;
    elbucle:loop
-      fetch elcursor into titol, recaptat, pressu;
+      fetch elcursor into sexe, edat, nom;
       
       if final = 1 then
          leave elbucle;
       end if;
       
-      if (pressu>recaptat) then
-         set rendibilitat = "Deficitari";
-      elseif (pressu*2 > recaptat) then
-         set rendibilitat = "Suficient";
-      else
-         set rendibilitat = "Bona";
-      end if;
+         set sexe = ACTORS.sexe_actor;
+         set edat = ACTORS.anynaix_actor;
+         set nom = ACTORS.nom_actor;
       
-      select titol, rendibilitat;
+      select sexe, edat, nom;
    
    end loop elbucle; 
    close elcursor;

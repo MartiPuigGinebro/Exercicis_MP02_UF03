@@ -6,16 +6,16 @@ CREATE FUNCTION act11(peCodiPeli SMALLINT UNSIGNED)
        RETURNS SMALLINT UNSIGNED
        DETERMINISTIC
 BEGIN
-   DECLARE QtatExemplars SMALLINT UNSIGNED;
+   DECLARE quantitatPrestecs SMALLINT UNSIGNED;
 
    SELECT   COUNT(*)
-        INTO QtatExemplars
-   FROM     EXEMPLARS
+        INTO quantitatPrestecs
+   FROM     PRESTECS
    WHERE    id_peli = peCodiPeli;
 
-   RETURN QtatExemplars;
+   RETURN quantitatPrestecs;
 END//
 DELIMITER ;
-SELECT  titol_peli Titol, act11(1) "Quantitat exemplars"
-FROM    PELLICULES
- WHERE   id_peli = 1;
+  SELECT  titol_peli Titol, act11(1) "Quantitat exemplars"
+   FROM    PELLICULES
+   WHERE   id_peli = 1;

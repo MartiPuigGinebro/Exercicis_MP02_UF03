@@ -1,21 +1,35 @@
 USE videoclub;
 DROP FUNCTION IF EXISTS act12;
-
 DELIMITER //
-CREATE FUNCTION act12(codiPeli SMALLINT UNSIGNED) 
-	 RETURNS SMALLINT UNSIGNED
+CREATE FUNCTION act12(CodiPeli SMALLINT UNSIGNED) 
+       RETURNS Smallint
+       DETERMINISTIC
 BEGIN
+   DECLARE idActor Smallint UNSIGNED;
+DECLARE final int default false;
+ 
+DECLARE elcursor cursor for
+       SELECT   id_actor
+   FROM     ACTORS_PELLICULES
+   WHERE    id_peli = CodiPeli
+   AND principal = 1;
+   
+ DECLARE continue handler for not found SET final = 1;
+   open elcursor;
+   elbucle:loop
+      fetch elcursor into idActor;
 
-DECLARE nomActor VARCHAR(30);
-
-SELECT ACTORS.id_actor, ACTORS.nom_actor, PELLICULES.id_peli, PELLICULES.titol_peli, ACTORS_PELLICULES.principal
-INTO nomActor
-FROM ACTORS
-LEFT JOIN ACTORS_PELLICULES ON ACTORS.id_actor = ACTORS_PELLICULES.id_actor 
-LEFT JOIN PELLICULES ON ACTORS_PELLICULES.id_peli = PELLICULES.id_peli
-WHERE PELLICULES.id_peli = codiPeli AND ACTORS_PELLICULES.principal = 1;
-
-RETURN nomActor;
-
-END //
+      if final = 1 then
+         leave elbucle;
+      end if;
+	
+	RETURN idActor;
+   END loop elbucle;
+   close elcursor;
+   
+END//
 DELIMITER ;
+
+SELECT ACTORS.nom_actor, PELLICULES.titol_peli
+FROM ACTORS , PELLICULES
+WHERE id_actor = act12(2) AND id_peli = 2;

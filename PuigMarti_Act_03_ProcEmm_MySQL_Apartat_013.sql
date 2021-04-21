@@ -1,20 +1,19 @@
 USE videoclub;
-DROP FUNCTION IF EXISTS act12;
+DROP FUNCTION IF EXISTS act13;
 
 DELIMITER //
-CREATE FUNCTION act12(codiPeli SMALLINT UNSIGNED) 
-	 RETURNS SMALLINT UNSIGNED
+CREATE FUNCTION act13() 
+       RETURNS bigint UNSIGNED
+       DETERMINISTIC
 BEGIN
+   DECLARE quantitatPrestecs bigint UNSIGNED;
 
-DECLARE nomActor VARCHAR(30);
+   SELECT   MAX(PELLICULES.recaudacio_peli)
+        INTO quantitatPrestecs
+   FROM     PELLICULES;
 
-SELECT PELLICULES.recaudacio_peli, PELLICULES.titol_peli, ACTORS.nom_actor, ACTORS_PELLICULES.principal
-FROM PELLICULES
-LEFT JOIN ACTORS_PELLICULES ON PELLICULES.id_peli = ACTORS_PELLICULES.id_peli 
-LEFT JOIN ACTORS ON ACTORS_PELLICULES.id_actor = ACTORS.id_actor
-WHERE ACTORS_PELLICULES.principal = 1;
-
-RETURN nomActor;
-
-END //
+   RETURN quantitatPrestecs;
+END//
 DELIMITER ;
+  SELECT  titol_peli Titol, act13() "Quantitat exemplars"
+   FROM    PELLICULES;

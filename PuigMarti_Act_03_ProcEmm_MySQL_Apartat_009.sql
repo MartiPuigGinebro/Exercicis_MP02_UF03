@@ -3,14 +3,14 @@ drop procedure if exists act9;
 delimiter //
 create procedure act9()
 begin
-    DECLARE edat bigint;
-    DECLARE nom varchar(30);
-    DECLARE sexe varchar(6);
+   declare edat bigint;
+   declare nom varchar(30);
+   declare sexe varchar(6);
    declare final int default false;
-   
+   declare po_tipusDePaper varchar(6);
    declare elcursor cursor for
-SELECT ACTORS.sexe_actor, ACTORS.anynaix_actor, ACTORS`.`nom_actor
-FROM ACTORS;
+      SELECT ACTORS.sexe_actor, YEAR(CURDATE())-ACTORS.anynaix_actor, ACTORS.nom_actor
+   FROM ACTORS;
 
    declare continue handler for not found set final = 1;
    open elcursor;
@@ -21,11 +21,19 @@ FROM ACTORS;
          leave elbucle;
       end if;
       
-         set sexe = ACTORS.sexe_actor;
-         set edat = ACTORS.anynaix_actor;
-         set nom = ACTORS.nom_actor;
-      
-      select sexe, edat, nom;
+         IF edat < 15 THEN
+    SET po_tipusDePaper ="nen";
+    ELSEIF edat > 15 AND edat < 25 THEN
+    SET po_tipusDePaper ="jove";
+    ELSEIF edat > 26 AND edat < 40 THEN
+    SET po_tipusDePaper ="adult";
+    ELSEIF edat > 41 AND edat < 60 THEN
+    SET po_tipusDePaper ="madur";
+    ELSEIF edat > 61 THEN
+    SET po_tipusDePaper ="gran";
+    END IF;
+
+    SELECT nom, sexe, edat, po_tipusDePaper;
    
    end loop elbucle; 
    close elcursor;

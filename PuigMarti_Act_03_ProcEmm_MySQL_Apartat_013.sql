@@ -15,5 +15,17 @@ BEGIN
    RETURN quantitatPrestecs;
 END//
 DELIMITER ;
-  SELECT  titol_peli Titol, act13() "Quantitat exemplars"
-   FROM    PELLICULES;
+
+SELECT
+  PELLICULES.id_peli,
+  ACTORS_PELLICULES.principal,
+  ACTORS.nom_actor,
+  act13() "Recaudació"
+FROM
+  PELLICULES
+LEFT JOIN
+  ACTORS_PELLICULES ON PELLICULES.id_peli = ACTORS_PELLICULES.id_peli
+LEFT JOIN
+  ACTORS ON ACTORS_PELLICULES.id_actor = ACTORS.id_actor
+WHERE
+  recaudacio_peli = act13() AND ACTORS_PELLICULES.principal = 1;
